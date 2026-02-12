@@ -145,3 +145,42 @@ Tujuan endpoint:
 1. Di terminal, jalankan: `dotnet run`
 2. Buka browser: http://localhost:5151/swagger
 3. Klik tombol "Try it out" pada endpoint POST untuk mencoba memasukkan data.
+
+## 9. Desain Database (ERD)
+
+**ERD Konseptual:** Menjelaskan alur logika bahwa seorang Mahasiswa meminjam Ruangan. Di tahap awal ini, kita menyederhanakannya ke dalam satu entitas Bookings di kode, namun secara konsep tetap melibatkan tiga komponen tersebut.
+
+```mermaid
+erDiagram
+    MAHASISWA ||--o{ PEMINJAMAN : "melakukan"
+    RUANGAN ||--o{ PEMINJAMAN : "digunakan untuk"
+
+    MAHASISWA {
+        string NIM
+        string Nama
+    }
+    RUANGAN {
+        string NamaRuangan
+    }
+    PEMINJAMAN {
+        datetime Waktu
+        string Keperluan
+        string Status
+    }
+```
+
+ERD Fisik: Sesuai dengan tabel Bookings yang sudah kamu buat di PostgreSQL menggunakan Entity Framework. Tipe data uuid digunakan untuk ID agar unik secara global, dan timestamp with time zone digunakan untuk akurasi waktu peminjaman.
+
+```mermaid
+erDiagram
+    Bookings {
+        uuid Id PK
+        text NIM
+        text NamaMahasiswa
+        text NamaRuangan
+        timestamp_with_timezone WaktuMulai
+        timestamp_with_timezone WaktuSelesai
+        text Keperluan
+        text Status
+    }
+```
